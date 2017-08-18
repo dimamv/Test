@@ -38,9 +38,9 @@ namespace GitParser
         }
 
         #region Initialize UI
-        bool isUIInitialized;
         public ScrollBar vScrollBar { get; private set; }
 
+        //set track for vertical scrolling
         public void SetScrollTrack(ScrollBar vScrollBar)
         {
             this.vScrollBar = vScrollBar;
