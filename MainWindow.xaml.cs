@@ -29,13 +29,6 @@ namespace GitParser
         SelectFloatPanel FloatPanel;
         BacgroundUpdater bacgroundUpdater;
 
-        Brush ColorUpdateYes;
-        Brush ColorUpdateLoad;
-        Brush ColorUpdateApply;
-        Brush ColorUpdateNo;
-        Brush ColorUpdateError;
-        DispatcherTimer dispatcherTimer;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -53,59 +46,8 @@ namespace GitParser
             bacgroundUpdater = new BacgroundUpdater(@"e:\Projects\GitParser\Releases\", labelUpdate, 2);
             bacgroundUpdater.bgwUpdate.RunWorkerAsync();
 
-
-            //bacgroundUpdater = new BacgroundUpdater(@"e:\Projects\GitParser\Releases\", labelUpdate, 2);
-            ColorUpdateYes = new SolidColorBrush(Colors.LightBlue);
-            ColorUpdateLoad = new SolidColorBrush(Colors.LightCyan);
-            ColorUpdateApply = new SolidColorBrush(Colors.LightGreen);
-            ColorUpdateNo = new SolidColorBrush(Colors.LightGray);
-            ColorUpdateError = new SolidColorBrush(Colors.LightPink);
-
-
-
-            dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += DispatcherTimer_Tick;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 4);
-            //dispatcherTimer.Start();
-
         }
 
-        private void DispatcherTimer_Tick(object sender, EventArgs e)
-        {
-            dispatcherTimer.Stop();
-            try
-            {
-                using(var mgr = new UpdateManager(@"e:\Projects\GitParser\Releases\"))
-                {
-                    var updateInfo = mgr.CheckForUpdate().Result;
-                    if(updateInfo.CurrentlyInstalledVersion.Version < updateInfo.FutureReleaseEntry.Version)
-                    {
-                        labelUpdate.Content = "Y";
-                        labelUpdate.Background = ColorUpdateYes;
-                        mgr.DownloadReleases(updateInfo.ReleasesToApply).Wait();
-                        labelUpdate.Content = "D";
-                        labelUpdate.Background = ColorUpdateLoad;
-                        mgr.ApplyReleases(updateInfo).Wait();
-                        labelUpdate.Content = "A";
-                        labelUpdate.Background = ColorUpdateApply;
-                    }
-                    else
-                    {
-                        labelUpdate.Content = "?";
-                        labelUpdate.Background = ColorUpdateNo;
-                    }
-                }
-            }
-            catch(Exception e1)
-            {
-                labelUpdate.Content = "!";
-                labelUpdate.Background = ColorUpdateError;
-            }
-            dispatcherTimer.Start();
-
-
-                //            bacgroundUpdater.bgwUpdate.RunWorkerAsync();
-        }
 
         #region AvalonEdit events execute
         private void TextEditor_SizeChanged(object sender, SizeChangedEventArgs e)
