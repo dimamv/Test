@@ -33,6 +33,7 @@ namespace GitParser
         Brush ColorUpdateError;
         public ResultUpdate UpdateResult { get; private set; }
         int secondsPeriodCheckUpdate;
+        int st=7;
 
         public BacgroundUpdater(string PathUpdate, Label labelStaus,
             int secondsPeriodCheckUpdate)
@@ -72,7 +73,7 @@ namespace GitParser
                     break;
             }
         }
-
+        
         private void BgwUpdate_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if(e.Error != null)
